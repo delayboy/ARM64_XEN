@@ -265,7 +265,7 @@ static void allocate_memory_11(struct domain *d, struct kernel_info *kinfo)
      */
     while ( order >= min_low_order )
     {
-        for ( bits = order ; bits <= (lowmem ? 32 : PADDR_BITS); bits++ )
+        for ( bits = order ; bits <= (lowmem ? 30 : PADDR_BITS); bits++ )
         {
             pg = alloc_domheap_pages(d, order, MEMF_bits(bits));
             if ( pg != NULL )
