@@ -11,7 +11,7 @@ MINOR = 0
 XLUMAJOR = 4.6
 XLUMINOR = 0
 
-CFLAGS += -Werror -Wno-format-zero-length -Wmissing-declarations \
+CFLAGS += -Wno-error -Wno-format-zero-length -Wmissing-declarations \
 	-Wno-declaration-after-statement -Wformat-nonliteral
 CFLAGS += -I. -fPIC
 

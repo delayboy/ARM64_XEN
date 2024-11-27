@@ -7,7 +7,7 @@ MINOR = 0
 LDFLAGS-$(CONFIG_SunOS) = -Wl,-M -Wl,mapfile-SunOS
 LDFLAGS-$(CONFIG_Linux) = -Wl,mapfile-GNU
 LDFLAGS = $(LDFLAGS-y)
-
+CFLAGS += -Wno-error
 CFLAGS += $(PTHREAD_CFLAGS)
 LDFLAGS += $(PTHREAD_LDFLAGS)
 

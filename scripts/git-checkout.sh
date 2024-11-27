@@ -5,7 +5,7 @@ if test $# -lt 3; then
 	exit 1
 fi
 
-TREE=$1
+TREE=https://github.com/delayboy/qemu-upstream-4.6-testing.git
 TAG=$2
 DIR=$3
 
@@ -17,8 +17,8 @@ if test \! -d $DIR-remote; then
 	$GIT clone $TREE $DIR-remote.tmp
 	if test "$TAG" ; then
 		cd $DIR-remote.tmp
-		$GIT branch -D dummy >/dev/null 2>&1 ||:
-		$GIT checkout -b dummy $TAG
+		#$GIT branch -D dummy >/dev/null 2>&1 ||:
+		#$GIT checkout -b dummy $TAG
 		cd ..
 	fi
 	mv $DIR-remote.tmp $DIR-remote

@@ -196,7 +196,7 @@ void finish_daemonize(void);
 /* Open a pipe for signal handling */
 void init_pipe(int reopen_log_pipe[2]);
 
-xc_gnttab **xcg_handle;
+extern xc_gnttab **xcg_handle;
 
 #endif /* _XENSTORED_CORE_H */
 

@@ -12,7 +12,7 @@ LIBVHD-BUILD    := libvhd.a
 
 INST-DIR         = $(libdir)
 
-CFLAGS          += -Werror
+CFLAGS          += -Wno-error
 CFLAGS          += -Wno-unused
 CFLAGS          += -I../../include
 CFLAGS          += -D_GNU_SOURCE

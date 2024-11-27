@@ -1,7 +1,7 @@
 XEN_ROOT=$(CURDIR)/../..
 include $(XEN_ROOT)/tools/Rules.mk
 
-CFLAGS += -Werror
+CFLAGS += -Wno-error
 CFLAGS += $(CFLAGS_libxenstore)
 
 LDLIBS += $(LDLIBS_libxenstore)

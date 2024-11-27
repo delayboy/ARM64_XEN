@@ -37,7 +37,7 @@
 #include <sys/types.h>
 #include <sys/ioctl.h>
 #include <linux/major.h>
-
+#include <sys/sysmacros.h>
 #include "tap-ctl.h"
 #include "blktap2.h"
 

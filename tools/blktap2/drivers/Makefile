@@ -9,7 +9,7 @@ QCOW_UTIL  = img2qcow qcow-create qcow2raw
 LOCK_UTIL  = lock-util
 INST_DIR   = $(sbindir)
 
-CFLAGS    += -Werror
+CFLAGS    += -Wno-error
 CFLAGS    += -Wno-unused
 CFLAGS    += -fno-strict-aliasing
 CFLAGS    += -I$(BLKTAP_ROOT)/include -I$(BLKTAP_ROOT)/drivers

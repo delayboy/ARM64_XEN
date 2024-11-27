@@ -237,7 +237,7 @@ static int set_mode(xc_interface *xch, domid_t domid, char *guest_type)
     };
     DECLARE_DOMCTL;
     int i,rc;
-
+    domctl.u.address_size.size =0;
     domctl.domain = domid;
     domctl.cmd    = XEN_DOMCTL_set_address_size;
     for ( i = 0; i < ARRAY_SIZE(types); i++ )
