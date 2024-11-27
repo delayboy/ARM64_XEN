@@ -819,11 +819,13 @@ unlock:
 void __trace_hypercall(uint32_t event, unsigned long op,
                        const xen_ulong_t *args)
 {
-    struct __packed {
+    #pragma pack(1) //__packed
+    struct {
         uint32_t op;
         uint32_t args[6];
     } d;
     uint32_t *a = d.args;
+    #pragma pack()
 
 #define APPEND_ARG32(i)                         \
     do {                                        \
