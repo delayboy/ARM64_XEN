@@ -18,8 +18,7 @@ if test \! -d $DIR-remote; then
 	$GIT clone $TREE $DIR-remote.tmp
 	if test "$TAG" ; then
 		cd $DIR-remote.tmp
-		$GIT branch -D dummy >/dev/null 2>&1 ||:
-		$GIT checkout -b dummy $TAG
+		$GIT checkout qemu-xen-for-4-13
 		cd ..
 	fi
 	mv $DIR-remote.tmp $DIR-remote
