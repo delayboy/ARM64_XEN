@@ -5,8 +5,8 @@ if test $# -lt 3; then
 	exit 1
 fi
 
-#TREE=$1
-TREE=git://localhost:1080/qemu-xen.git
+#TREE=$1 git://localhost:1080/qemu-xen.git
+TREE=https://github.com/delayboy/qemu-upstream-4.6-testing.git
 TAG=$2
 DIR=$3
 
