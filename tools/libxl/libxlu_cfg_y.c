@@ -113,22 +113,23 @@ enum yysymbol_kind_t
   YYSYMBOL_STRING = 4,                     /* STRING  */
   YYSYMBOL_NUMBER = 5,                     /* NUMBER  */
   YYSYMBOL_NEWLINE = 6,                    /* NEWLINE  */
-  YYSYMBOL_7_ = 7,                         /* '='  */
-  YYSYMBOL_8_ = 8,                         /* ';'  */
-  YYSYMBOL_9_ = 9,                         /* '['  */
-  YYSYMBOL_10_ = 10,                       /* ']'  */
-  YYSYMBOL_11_ = 11,                       /* ','  */
-  YYSYMBOL_YYACCEPT = 12,                  /* $accept  */
-  YYSYMBOL_file = 13,                      /* file  */
-  YYSYMBOL_stmts = 14,                     /* stmts  */
-  YYSYMBOL_stmt = 15,                      /* stmt  */
-  YYSYMBOL_assignment = 16,                /* assignment  */
-  YYSYMBOL_endstmt = 17,                   /* endstmt  */
-  YYSYMBOL_value = 18,                     /* value  */
-  YYSYMBOL_atom = 19,                      /* atom  */
-  YYSYMBOL_valuelist = 20,                 /* valuelist  */
-  YYSYMBOL_values = 21,                    /* values  */
-  YYSYMBOL_nlok = 22                       /* nlok  */
+  YYSYMBOL_OP_ADD = 7,                     /* "+="  */
+  YYSYMBOL_8_ = 8,                         /* '='  */
+  YYSYMBOL_9_ = 9,                         /* ';'  */
+  YYSYMBOL_10_ = 10,                       /* '['  */
+  YYSYMBOL_11_ = 11,                       /* ']'  */
+  YYSYMBOL_12_ = 12,                       /* ','  */
+  YYSYMBOL_YYACCEPT = 13,                  /* $accept  */
+  YYSYMBOL_file = 14,                      /* file  */
+  YYSYMBOL_stmts = 15,                     /* stmts  */
+  YYSYMBOL_stmt = 16,                      /* stmt  */
+  YYSYMBOL_assignment = 17,                /* assignment  */
+  YYSYMBOL_endstmt = 18,                   /* endstmt  */
+  YYSYMBOL_value = 19,                     /* value  */
+  YYSYMBOL_atom = 20,                      /* atom  */
+  YYSYMBOL_valuelist = 21,                 /* valuelist  */
+  YYSYMBOL_values = 22,                    /* values  */
+  YYSYMBOL_nlok = 23                       /* nlok  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -459,19 +460,19 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  3
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   25
+#define YYLAST   27
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  12
+#define YYNTOKENS  13
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  11
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  22
+#define YYNRULES  23
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  30
+#define YYNSTATES  32
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   261
+#define YYMAXUTOK   262
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -489,12 +490,12 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,    11,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     8,
-       2,     7,     2,     2,     2,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,    12,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,     9,
+       2,     8,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     9,     2,    10,     2,     2,     2,     2,     2,     2,
+       2,    10,     2,    11,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -511,16 +512,16 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
-       5,     6
+       5,     6,     7
 };
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    47,    47,    48,    50,    51,    53,    54,    55,    57,
-      59,    60,    62,    63,    65,    66,    68,    69,    70,    72,
-      73,    75,    77
+       0,    48,    48,    49,    51,    52,    54,    55,    56,    58,
+      59,    61,    62,    64,    65,    67,    68,    70,    71,    72,
+      74,    75,    77,    79
 };
 #endif
 
@@ -537,9 +538,9 @@ static const char *yysymbol_name (yysymbol_kind_t yysymbol) YY_ATTRIBUTE_UNUSED;
 static const char *const yytname[] =
 {
   "\"end of file\"", "error", "\"invalid token\"", "IDENT", "STRING",
-  "NUMBER", "NEWLINE", "'='", "';'", "'['", "']'", "','", "$accept",
-  "file", "stmts", "stmt", "assignment", "endstmt", "value", "atom",
-  "valuelist", "values", "nlok", YY_NULLPTR
+  "NUMBER", "NEWLINE", "\"+=\"", "'='", "';'", "'['", "']'", "','",
+  "$accept", "file", "stmts", "stmt", "assignment", "endstmt", "value",
+  "atom", "valuelist", "values", "nlok", YY_NULLPTR
 };
 
 static const char *
@@ -563,9 +564,10 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-     -18,     4,     0,   -18,    -1,     6,   -18,   -18,   -18,     3,
-     -18,   -18,    14,   -18,   -18,   -18,   -18,   -18,   -18,    11,
-     -18,   -18,    12,    10,    18,   -18,   -18,    11,   -18,    18
+     -18,     5,     1,   -18,    -3,    14,   -18,   -18,   -18,     3,
+     -18,   -18,    10,    10,   -18,   -18,   -18,   -18,   -18,   -18,
+     -18,    13,   -18,   -18,    15,    12,    19,   -18,   -18,    13,
+     -18,    19
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -573,23 +575,24 @@ static const yytype_int8 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       4,     0,     0,     1,     0,     0,    10,    11,     5,     3,
-       7,     8,     0,     6,    14,    15,    21,     9,    12,    16,
-      22,    21,     0,    17,    19,    13,    21,    18,    21,    20
+       4,     0,     0,     1,     0,     0,    11,    12,     5,     3,
+       7,     8,     0,     0,     6,    15,    16,    22,    10,    13,
+       9,    17,    23,    22,     0,    18,    20,    14,    22,    19,
+      22,    21
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -18,   -18,   -18,   -18,   -18,    16,   -17,   -18,   -18,   -18,
-     -14
+     -18,   -18,   -18,   -18,   -18,    18,   -13,   -18,   -18,   -18,
+     -17
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-       0,     1,     2,     8,     9,    10,    17,    18,    22,    23,
-      19
+       0,     1,     2,     8,     9,    10,    18,    19,    24,    25,
+      21
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -597,41 +600,42 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      -2,     4,    21,     5,     3,    11,     6,    24,     7,     6,
-      28,     7,    27,    12,    29,    14,    15,    20,    14,    15,
-      16,    26,    25,    16,    20,    13
+      20,    -2,     4,    11,     5,     3,    26,     6,    23,     6,
+       7,    29,     7,    31,    15,    16,    30,    15,    16,    22,
+      17,    12,    13,    17,    28,    22,    27,    14
 };
 
 static const yytype_int8 yycheck[] =
 {
-       0,     1,    19,     3,     0,     6,     6,    21,     8,     6,
-      27,     8,    26,     7,    28,     4,     5,     6,     4,     5,
-       9,    11,    10,     9,     6,     9
+      13,     0,     1,     6,     3,     0,    23,     6,    21,     6,
+       9,    28,     9,    30,     4,     5,    29,     4,     5,     6,
+      10,     7,     8,    10,    12,     6,    11,     9
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,    13,    14,     0,     1,     3,     6,     8,    15,    16,
-      17,     6,     7,    17,     4,     5,     9,    18,    19,    22,
-       6,    18,    20,    21,    22,    10,    11,    22,    18,    22
+       0,    14,    15,     0,     1,     3,     6,     9,    16,    17,
+      18,     6,     7,     8,    18,     4,     5,    10,    19,    20,
+      19,    23,     6,    19,    21,    22,    23,    11,    12,    23,
+      19,    23
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    12,    13,    13,    14,    14,    15,    15,    15,    16,
-      17,    17,    18,    18,    19,    19,    20,    20,    20,    21,
-      21,    22,    22
+       0,    13,    14,    14,    15,    15,    16,    16,    16,    17,
+      17,    18,    18,    19,    19,    20,    20,    21,    21,    21,
+      22,    22,    23,    23
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
        0,     2,     1,     2,     0,     2,     2,     1,     2,     3,
-       1,     1,     1,     4,     1,     1,     0,     1,     3,     2,
-       5,     0,     2
+       3,     1,     1,     1,     4,     1,     1,     0,     1,     3,
+       2,     5,     0,     2
 };
 
 
@@ -1195,43 +1199,43 @@ yydestruct (const char *yymsg,
     case YYSYMBOL_IDENT: /* IDENT  */
 #line 40 "libxlu_cfg_y.y"
             { free(((*yyvaluep).string)); }
-#line 1199 "libxlu_cfg_y.c"
+#line 1203 "libxlu_cfg_y.c"
         break;
 
     case YYSYMBOL_STRING: /* STRING  */
 #line 40 "libxlu_cfg_y.y"
             { free(((*yyvaluep).string)); }
-#line 1205 "libxlu_cfg_y.c"
+#line 1209 "libxlu_cfg_y.c"
         break;
 
     case YYSYMBOL_NUMBER: /* NUMBER  */
 #line 40 "libxlu_cfg_y.y"
             { free(((*yyvaluep).string)); }
-#line 1211 "libxlu_cfg_y.c"
+#line 1215 "libxlu_cfg_y.c"
         break;
 
     case YYSYMBOL_value: /* value  */
-#line 43 "libxlu_cfg_y.y"
+#line 44 "libxlu_cfg_y.y"
             { xlu__cfg_value_free(((*yyvaluep).value)); }
-#line 1217 "libxlu_cfg_y.c"
+#line 1221 "libxlu_cfg_y.c"
         break;
 
     case YYSYMBOL_atom: /* atom  */
 #line 40 "libxlu_cfg_y.y"
             { free(((*yyvaluep).string)); }
-#line 1223 "libxlu_cfg_y.c"
+#line 1227 "libxlu_cfg_y.c"
         break;
 
     case YYSYMBOL_valuelist: /* valuelist  */
-#line 43 "libxlu_cfg_y.y"
+#line 44 "libxlu_cfg_y.y"
             { xlu__cfg_value_free(((*yyvaluep).value)); }
-#line 1229 "libxlu_cfg_y.c"
+#line 1233 "libxlu_cfg_y.c"
         break;
 
     case YYSYMBOL_values: /* values  */
-#line 43 "libxlu_cfg_y.y"
+#line 44 "libxlu_cfg_y.y"
             { xlu__cfg_value_free(((*yyvaluep).value)); }
-#line 1235 "libxlu_cfg_y.c"
+#line 1239 "libxlu_cfg_y.c"
         break;
 
       default:
@@ -1535,67 +1539,73 @@ yyreduce:
   switch (yyn)
     {
   case 9: /* assignment: IDENT '=' value  */
-#line 57 "libxlu_cfg_y.y"
-                            { xlu__cfg_set_store(ctx,(yyvsp[-2].string),(yyvsp[0].value),(yylsp[0]).first_line); }
-#line 1541 "libxlu_cfg_y.c"
+#line 58 "libxlu_cfg_y.y"
+                            { xlu__cfg_set_store(ctx,(yyvsp[-2].string),XLU_OP_ASSIGNMENT,(yyvsp[0].value),(yylsp[0]).first_line); }
+#line 1545 "libxlu_cfg_y.c"
     break;
 
-  case 12: /* value: atom  */
-#line 62 "libxlu_cfg_y.y"
+  case 10: /* assignment: IDENT "+=" value  */
+#line 59 "libxlu_cfg_y.y"
+                             { xlu__cfg_set_store(ctx,(yyvsp[-2].string),XLU_OP_ADDITION,(yyvsp[0].value),(yylsp[0]).first_line); }
+#line 1551 "libxlu_cfg_y.c"
+    break;
+
+  case 13: /* value: atom  */
+#line 64 "libxlu_cfg_y.y"
                                      { (yyval.value)= xlu__cfg_string_mk(ctx,(yyvsp[0].string),&(yylsp[0])); }
-#line 1547 "libxlu_cfg_y.c"
+#line 1557 "libxlu_cfg_y.c"
     break;
 
-  case 13: /* value: '[' nlok valuelist ']'  */
-#line 63 "libxlu_cfg_y.y"
-                                     { (yyval.value)= (yyvsp[-1].value); }
-#line 1553 "libxlu_cfg_y.c"
-    break;
-
-  case 14: /* atom: STRING  */
+  case 14: /* value: '[' nlok valuelist ']'  */
 #line 65 "libxlu_cfg_y.y"
-                                 { (yyval.string)= (yyvsp[0].string); }
-#line 1559 "libxlu_cfg_y.c"
+                                     { (yyval.value)= (yyvsp[-1].value); }
+#line 1563 "libxlu_cfg_y.c"
     break;
 
-  case 15: /* atom: NUMBER  */
-#line 66 "libxlu_cfg_y.y"
+  case 15: /* atom: STRING  */
+#line 67 "libxlu_cfg_y.y"
                                  { (yyval.string)= (yyvsp[0].string); }
-#line 1565 "libxlu_cfg_y.c"
+#line 1569 "libxlu_cfg_y.c"
     break;
 
-  case 16: /* valuelist: %empty  */
+  case 16: /* atom: NUMBER  */
 #line 68 "libxlu_cfg_y.y"
-                                 { (yyval.value)= xlu__cfg_list_mk(ctx,NULL,&yylloc); }
-#line 1571 "libxlu_cfg_y.c"
+                                 { (yyval.string)= (yyvsp[0].string); }
+#line 1575 "libxlu_cfg_y.c"
     break;
 
-  case 17: /* valuelist: values  */
-#line 69 "libxlu_cfg_y.y"
-                                { (yyval.value)= (yyvsp[0].value); }
-#line 1577 "libxlu_cfg_y.c"
-    break;
-
-  case 18: /* valuelist: values ',' nlok  */
+  case 17: /* valuelist: %empty  */
 #line 70 "libxlu_cfg_y.y"
-                                { (yyval.value)= (yyvsp[-2].value); }
-#line 1583 "libxlu_cfg_y.c"
+                                 { (yyval.value)= xlu__cfg_list_mk(ctx,NULL,&yylloc); }
+#line 1581 "libxlu_cfg_y.c"
     break;
 
-  case 19: /* values: value nlok  */
+  case 18: /* valuelist: values  */
+#line 71 "libxlu_cfg_y.y"
+                                { (yyval.value)= (yyvsp[0].value); }
+#line 1587 "libxlu_cfg_y.c"
+    break;
+
+  case 19: /* valuelist: values ',' nlok  */
 #line 72 "libxlu_cfg_y.y"
+                                { (yyval.value)= (yyvsp[-2].value); }
+#line 1593 "libxlu_cfg_y.c"
+    break;
+
+  case 20: /* values: value nlok  */
+#line 74 "libxlu_cfg_y.y"
                                     { (yyval.value)= xlu__cfg_list_mk(ctx,(yyvsp[-1].value),&(yylsp[-1])); }
-#line 1589 "libxlu_cfg_y.c"
-    break;
-
-  case 20: /* values: values ',' nlok value nlok  */
-#line 73 "libxlu_cfg_y.y"
-                                    { xlu__cfg_list_append(ctx,(yyvsp[-4].value),(yyvsp[-1].value)); (yyval.value)= (yyvsp[-4].value); }
-#line 1595 "libxlu_cfg_y.c"
-    break;
-
-
 #line 1599 "libxlu_cfg_y.c"
+    break;
+
+  case 21: /* values: values ',' nlok value nlok  */
+#line 75 "libxlu_cfg_y.y"
+                                    { xlu__cfg_list_append(ctx,(yyvsp[-4].value),(yyvsp[-1].value)); (yyval.value)= (yyvsp[-4].value); }
+#line 1605 "libxlu_cfg_y.c"
+    break;
+
+
+#line 1609 "libxlu_cfg_y.c"
 
       default: break;
     }

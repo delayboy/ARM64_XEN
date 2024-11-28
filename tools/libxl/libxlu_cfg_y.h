@@ -57,7 +57,8 @@ extern int xlu__cfg_yydebug;
     IDENT = 258,                   /* IDENT  */
     STRING = 259,                  /* STRING  */
     NUMBER = 260,                  /* NUMBER  */
-    NEWLINE = 261                  /* NEWLINE  */
+    NEWLINE = 261,                 /* NEWLINE  */
+    OP_ADD = 262                   /* "+="  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -71,7 +72,7 @@ union YYSTYPE
   char *string;
   XLU_ConfigValue *value;
 
-#line 75 "libxlu_cfg_y.h"
+#line 76 "libxlu_cfg_y.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
