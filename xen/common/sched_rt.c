@@ -190,6 +190,7 @@ struct rt_private {
     struct list_head replq;     /* ordered list of units that need replenishment */
 
     cpumask_t tickled;          /* cpus been tickled */
+    uint16_t priority_scheme;
 };
 
 /*
@@ -516,8 +517,30 @@ deadline_queue_insert(struct rt_unit * (*qelem)(struct list_head *),
     list_add_tail(elem, iter);
     return !pos;
 }
+static inline bool
+deadline_queue_insert_old(struct rt_unit * (*qelem)(struct list_head *),
+                      struct rt_unit *svc, struct list_head *elem,
+                      struct list_head *queue, struct rt_private *prv)
+{
+    struct list_head *iter;
+    int pos = 0;
+
+    list_for_each ( iter, queue )
+    {
+        struct rt_unit * iter_svc = (*qelem)(iter);
+        if ( compare_unit_priority(svc, iter_svc) > 0 )
+            break;
+         if ( ( prv->priority_scheme == EDF && svc->cur_deadline <= iter_svc->cur_deadline ) ||
+                 ( prv->priority_scheme == RM && svc->period <= iter_svc->period ))
+		       break;
+        pos++;
+    }
+    list_add_tail(elem, iter);
+    return !pos;
+}
+
 #define deadline_runq_insert(...) \
-  deadline_queue_insert(&q_elem, ##__VA_ARGS__)
+  deadline_queue_insert_old(&q_elem, ##__VA_ARGS__)
 #define deadline_replq_insert(...) \
   deadline_queue_insert(&replq_elem, ##__VA_ARGS__)
 
@@ -572,7 +595,7 @@ runq_insert(const struct scheduler *ops, struct rt_unit *svc)
     /* add svc to runq if svc still has budget or its extratime is set */
     if ( svc->cur_budget > 0 ||
          has_extratime(svc) )
-        deadline_runq_insert(svc, &svc->q_elem, runq);
+        deadline_runq_insert(svc, &svc->q_elem, runq,prv);
     else
         list_add(&svc->q_elem, &prv->depletedq);
 }
@@ -674,7 +697,7 @@ rt_init(struct scheduler *ops)
     INIT_LIST_HEAD(&prv->runq);
     INIT_LIST_HEAD(&prv->depletedq);
     INIT_LIST_HEAD(&prv->replq);
-
+    prv->priority_scheme= EDF;
     ops->sched_data = prv;
     rc = 0;
 
@@ -1106,7 +1129,9 @@ rt_schedule(const struct scheduler *ops, struct sched_unit *currunit,
              unit_runnable_state(currunit) &&
              scurr->cur_budget > 0 &&
              ( is_idle_unit(snext->unit) ||
-               compare_unit_priority(scurr, snext) > 0 ) )
+               compare_unit_priority(scurr, snext) > 0  ||
+               ( prv->priority_scheme == EDF && scurr->cur_deadline <= snext->cur_deadline ) ||
+                   ( prv->priority_scheme == RM && scurr->period <= snext->period ) )  )
             snext = scurr;
     }
 
@@ -1182,6 +1207,7 @@ runq_tickle(const struct scheduler *ops, struct rt_unit *new)
 {
     struct rt_private *prv = rt_priv(ops);
     struct rt_unit *latest_deadline_unit = NULL; /* lowest priority */
+    struct rt_unit *lowest_priority_vcpu = NULL; /* lowest priority 2 */
     struct rt_unit *iter_svc;
     struct sched_unit *iter_unit;
     int cpu = 0, cpu_to_tickle = 0;
@@ -1214,17 +1240,22 @@ runq_tickle(const struct scheduler *ops, struct rt_unit *new)
         if ( latest_deadline_unit == NULL ||
              compare_unit_priority(iter_svc, latest_deadline_unit) < 0 )
             latest_deadline_unit = iter_svc;
+         if ( lowest_priority_vcpu == NULL ||
+            ( prv->priority_scheme == EDF && iter_svc->cur_deadline > lowest_priority_vcpu->cur_deadline ) ||
+            ( prv->priority_scheme == RM && iter_svc->period > lowest_priority_vcpu->period ) )
+	         lowest_priority_vcpu = iter_svc;
 
         cpumask_clear_cpu(cpu, &not_tickled);
         cpu = cpumask_cycle(cpu, &not_tickled);
     }
 
-    /* 2) candicate has higher priority, kick out lowest priority unit */
-    if ( latest_deadline_unit != NULL &&
-         compare_unit_priority(latest_deadline_unit, new) < 0 )
+    /* 2) candicate has higher priority, kick out lowest priority unit compare_unit_priority(latest_deadline_unit, new) < 0*/
+    if ( lowest_priority_vcpu != NULL && 
+         (( prv->priority_scheme == EDF && new->cur_deadline < lowest_priority_vcpu->cur_deadline ) ||
+        ( prv->priority_scheme == RM && new->period < lowest_priority_vcpu->period )) )
     {
         SCHED_STAT_CRANK(tickled_busy_cpu);
-        cpu_to_tickle = sched_unit_master(latest_deadline_unit->unit);
+        cpu_to_tickle = sched_unit_master(lowest_priority_vcpu->unit);
         goto out;
     }
 
@@ -1538,7 +1569,54 @@ static void repl_timer_handler(void *data){
 
     spin_unlock_irq(&prv->lock);
 }
+/**
+ * Xen scheduler callback function to perform a global (not domain-specific) adjustment. It is used by the rglobal scheduelr to change or retrieve the priority scheme or the server mechanism.
+ *
+ * @param ops   Pointer to this instance of the scheduler structure
+ * @param sc    Pointer to the scheduler operation specified by Domain 0
+ *
+ */
+static int
+rt_sys_cntl(const struct scheduler *ops,
+                       struct xen_sysctl_scheduler_op *sc)
+{
+    xen_sysctl_rtds_schedule_t *params = &sc->u.sched_rtds;
+    struct rt_private * prv = rt_priv(ops);
+    int rc = -EINVAL;
+    
+    switch( sc->cmd )
+    {
+    case XEN_SYSCTL_SCHEDOP_putinfo:
+        if (params->priority_scheme == XEN_SYSCTL_RTDS_EDF ) {
+            printk("Priority scheme changed to EDF\n");
+        } else if ( params->priority_scheme == XEN_SYSCTL_RTDS_RM ) {
+            printk("Priority scheme changed to RM\n");
+        } else {
+            printk("Input priority scheme is %d (Not EDF or RM)\n", prv->priority_scheme);
+            rc = -EINVAL;
+        }
+        /*
+        if (prv->priority_scheme != params->priority_scheme)
+        {
+            __runq_resort(ops);
+        }
+        */
+        prv->priority_scheme = params->priority_scheme;
+        rc = 0;
+        break;
+    case XEN_SYSCTL_SCHEDOP_getinfo:
+        params->priority_scheme = prv->priority_scheme;
+        printk("Priority scheme is %s\n", params->priority_scheme == XEN_SYSCTL_RTDS_EDF? "EDF":"RM");
+        rc = 0;
+        break;
+    default:
+        printk("sc->cmd: no such cmd %d\n", sc->cmd);
+        rc = -EINVAL;
+        break;
+    }
 
+    return rc;
+}
 static const struct scheduler sched_rtds_def = {
     .name           = "SMP RTDS Scheduler",
     .opt_name       = "rtds",
@@ -1560,6 +1638,7 @@ static const struct scheduler sched_rtds_def = {
     .remove_unit    = rt_unit_remove,
 
     .adjust         = rt_dom_cntl,
+    .adjust_global  = rt_sys_cntl,
 
     .pick_resource  = rt_res_pick,
     .do_schedule    = rt_schedule,

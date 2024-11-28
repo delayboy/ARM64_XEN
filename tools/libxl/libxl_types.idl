@@ -174,6 +174,12 @@ libxl_gfx_passthru_kind = Enumeration("gfx_passthru_kind", [
     (1, "igd"),
     ])
 
+# consistent with xen/include/public/domctl.h
+libxl_schedule_scheme = Enumeration("schedule_scheme", [
+    (81, "EDF"),
+    (82, "RM"),
+    ])
+
 # Consistent with the values defined for HVM_PARAM_TIMER_MODE.
 libxl_timer_mode = Enumeration("timer_mode", [
     (-1, "unknown"),
@@ -1127,6 +1133,10 @@ libxl_sched_credit_params = Struct("sched_credit_params", [
 
 libxl_sched_credit2_params = Struct("sched_credit2_params", [
     ("ratelimit_us", integer),
+    ], dispose_fn=None)
+    
+libxl_sched_rtds_params = Struct("sched_rtds_params", [
+    ("schedule_scheme", uint16),
     ], dispose_fn=None)
 
 libxl_domain_remus_info = Struct("domain_remus_info",[

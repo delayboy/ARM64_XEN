@@ -22,6 +22,17 @@
 #include "xl.h"
 #include "xl_utils.h"
 #include "xl_parse.h"
+static uint16_t find_schedule_scheme(const char *p)
+{
+    if(!strcmp(p, "EDF")){
+        return LIBXL_SCHEDULE_SCHEME_EDF;
+    }else if(!strcmp(p, "RM")){
+        return LIBXL_SCHEDULE_SCHEME_RM;
+    }else{
+        fprintf(stderr, "%s is an invalid schedule policy\n", p);
+        exit(2);
+    }
+}
 
 static int sched_domain_get(libxl_scheduler sched, int domid,
                             libxl_domain_sched_params *scinfo)
@@ -304,7 +315,27 @@ static int sched_rtds_vcpu_output(int domid, libxl_vcpu_sched_params *scinfo)
     free(domname);
     return 0;
 }
+static int sched_rtds_params_set(int poolid, libxl_sched_rtds_params *scinfo)
+{
+    int rc;
 
+    rc = libxl_sched_rtds_params_set(ctx, poolid, scinfo);
+    if (rc)
+        fprintf(stderr, "libxl_sched_rtds_params_set failed.\n");
+
+    return rc;
+}
+
+static int sched_rtds_params_get(int poolid, libxl_sched_rtds_params *scinfo)
+{
+    int rc;
+
+    rc = libxl_sched_rtds_params_get(ctx, poolid, scinfo);
+    if (rc)
+        fprintf(stderr, "libxl_sched_rtds_params_get failed.\n");
+
+    return rc;
+}
 static int sched_rtds_vcpu_output_all(int domid,
                                       libxl_vcpu_sched_params *scinfo)
 {
@@ -340,10 +371,22 @@ static int sched_rtds_vcpu_output_all(int domid,
 static int sched_rtds_pool_output(uint32_t poolid)
 {
     char *poolname;
-
+    int rc;
+    libxl_sched_rtds_params scparam;
     poolname = libxl_cpupoolid_to_name(ctx, poolid);
-    printf("Cpupool %s: sched=RTDS\n", poolname);
-
+    rc = sched_rtds_params_get(poolid, &scparam);
+    if (rc) {
+        printf("Cpupool %s: [sched params unavailable]\n",
+               poolname);
+    } else {
+        if ( scparam.schedule_scheme == LIBXL_SCHEDULE_SCHEME_EDF ) {
+            printf("Cpupool %s: EDF\n", poolname);
+        } else if ( scparam.schedule_scheme == LIBXL_SCHEDULE_SCHEME_RM ) {
+            printf("Cpupool %s: RM\n", poolname);
+        } else {
+            printf("Something went wrong: schedule scheme is not EDF or RM\n");
+        }
+    }
     free(poolname);
     return 0;
 }

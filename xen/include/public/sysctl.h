@@ -646,6 +646,15 @@ struct xen_sysctl_credit_schedule {
 #define XEN_SYSCTL_CSCHED_MGR_DLY_MAX_US (100 * 1000)
     unsigned vcpu_migr_delay_us;
 };
+struct xen_sysctl_rtds_schedule {
+    uint16_t priority_scheme;
+#define XEN_SYSCTL_RTDS_EDF 81
+#define XEN_SYSCTL_RTDS_RM 82
+#define RM XEN_SYSCTL_RTDS_RM
+#define EDF XEN_SYSCTL_RTDS_EDF
+};
+typedef struct xen_sysctl_rtds_schedule xen_sysctl_rtds_schedule_t;
+DEFINE_XEN_GUEST_HANDLE(xen_sysctl_rtds_schedule_t);
 
 struct xen_sysctl_credit2_schedule {
     unsigned ratelimit_us;
@@ -665,6 +674,7 @@ struct xen_sysctl_scheduler_op {
         } sched_arinc653;
         struct xen_sysctl_credit_schedule sched_credit;
         struct xen_sysctl_credit2_schedule sched_credit2;
+        struct xen_sysctl_rtds_schedule sched_rtds;
     } u;
 };
 

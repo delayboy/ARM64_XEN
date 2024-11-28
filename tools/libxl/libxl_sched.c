@@ -910,7 +910,46 @@ int libxl_domain_sched_params_get(libxl_ctx *ctx, uint32_t domid,
     GC_FREE;
     return ret;
 }
+int libxl_sched_rtds_params_get(libxl_ctx *ctx, uint32_t poolid,
+                                    libxl_sched_rtds_params *scinfo)
+{
+    struct xen_sysctl_rtds_schedule sparam;
+    int rc;
 
+    rc = xc_sched_rtds_params_get(ctx->xch, poolid, &sparam);
+    if (rc != 0){
+        LIBXL__LOG_ERRNO(ctx, LIBXL__LOG_ERROR, "getting sched rtds param");
+        return ERROR_FAIL;
+    }
+
+    scinfo->schedule_scheme = sparam.priority_scheme;
+
+    return 0;
+}
+int libxl_sched_rtds_params_set(libxl_ctx *ctx, uint32_t poolid,
+                                    libxl_sched_rtds_params *scinfo)
+{
+    struct xen_sysctl_rtds_schedule sparam;
+    int rc=0;
+
+    if( scinfo->schedule_scheme != XEN_SYSCTL_RTDS_EDF &&
+        scinfo->schedule_scheme != XEN_SYSCTL_RTDS_RM) {
+        LIBXL__LOG_ERRNO(ctx, LIBXL__LOG_ERROR,
+             "Only support EDF or RM as schedule scheme");
+        return ERROR_INVAL;
+    }
+
+    sparam.priority_scheme = scinfo->schedule_scheme;
+
+    rc = xc_sched_rtds_params_set(ctx->xch, poolid, &sparam);
+    if ( rc < 0 ) {
+        LIBXL__LOG_ERRNO(ctx, LIBXL__LOG_ERROR, "setting sched rtds param");
+        return ERROR_FAIL;
+    }
+
+    scinfo->schedule_scheme = sparam.priority_scheme;
+    return 0;
+}
 int libxl_vcpu_sched_params_get(libxl_ctx *ctx, uint32_t domid,
                                 libxl_vcpu_sched_params *scinfo)
 {

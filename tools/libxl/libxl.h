@@ -2454,6 +2454,12 @@ int libxl_domain_sched_params_get(libxl_ctx *ctx, uint32_t domid,
  * calling *_domain_set functions will set all vcpus with the same
  * scheduling parameters.
  */
+
+int libxl_sched_rtds_params_get(libxl_ctx *ctx, uint32_t poolid,
+                                  libxl_sched_rtds_params *scinfo);
+int libxl_sched_rtds_params_set(libxl_ctx *ctx, uint32_t poolid,
+                                  libxl_sched_rtds_params *scinfo);
+
 int libxl_domain_sched_params_set(libxl_ctx *ctx, uint32_t domid,
                                   const libxl_domain_sched_params *params);
 
