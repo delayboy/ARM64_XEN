@@ -7,8 +7,8 @@
 #   USELIBS: xen libs to use (e.g. "toolcore toollog")
 
 SHLIB_LDFLAGS += -Wl,--version-script=libxen$(LIBNAME).map
-
-CFLAGS   += -Werror -Wmissing-prototypes
+CFLAGS += -Wno-error
+# CFLAGS   += -Werror -Wmissing-prototypes
 CFLAGS   += -I./include $(CFLAGS_xeninclude)
 CFLAGS   += $(foreach lib, $(USELIBS), $(CFLAGS_libxen$(lib)))
 

@@ -5,7 +5,8 @@ if test $# -lt 3; then
 	exit 1
 fi
 
-TREE=$1
+#TREE=$1
+TREE=git://localhost:1080/qemu-xen.git
 TAG=$2
 DIR=$3
 
